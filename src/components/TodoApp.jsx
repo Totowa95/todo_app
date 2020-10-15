@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux'
 import { createTodo } from '../redux/actions'
+import { useDispatch } from 'react-redux';
 // import PropTypes from 'prop-types';
 
-const TodoApp = ({ createTodo }) => {
+const TodoApp = () => {
+  const dispatch = useDispatch();
+
   const [todo, setTodo] = useState('');
   return (
     <form
@@ -11,7 +13,11 @@ const TodoApp = ({ createTodo }) => {
         event.preventDefault();
 
         if (todo.length > 0) {
-          createTodo(+new Date(), todo.trim());
+          dispatch(createTodo({
+            id:+new Date(),
+            title:todo.trim(),
+            completed: false,
+          }));
           setTodo('');
         }
         return;
@@ -32,8 +38,4 @@ const TodoApp = ({ createTodo }) => {
 //   getTodo: PropTypes.func.isRequired,
 // };
 
-const mapDispatchToProps = {
-  createTodo,
-}
-
-export default connect(null, mapDispatchToProps)(TodoApp)
+export default TodoApp;

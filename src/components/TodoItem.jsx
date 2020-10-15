@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux'
+import { useDispatch } from 'react-redux';
 import { deleteTodo, changeCompleted, editingTodo } from '../redux/actions'
 import classNames from 'classnames';
 // import PropTypes from 'prop-types';
 
-const TodoItem = ({ todo, deleteTodo, changeCompleted, editingTodo }) => {
+const TodoItem = ({ todo }) => {
+  const dispatch = useDispatch();
   const [currentTodo, setCurrentTodo] = useState(todo.title);
   const [newTodo, setEditigTodo] = useState(currentTodo);
   const [editing, setEditing] = useState(false);
@@ -21,7 +22,7 @@ const TodoItem = ({ todo, deleteTodo, changeCompleted, editingTodo }) => {
           className="toggle"
           checked={todo.completed}
           onChange={() => {
-            changeCompleted(todo.id);
+            dispatch(changeCompleted(todo.id));
           }}
         />
         <label onDoubleClick={() => setEditing(true)}>
@@ -31,7 +32,7 @@ const TodoItem = ({ todo, deleteTodo, changeCompleted, editingTodo }) => {
           type="button"
           className="destroy"
           onClick={() => {
-            deleteTodo(todo.id);
+            dispatch(deleteTodo(todo.id));
           }}
         />
       </div>
@@ -49,14 +50,14 @@ const TodoItem = ({ todo, deleteTodo, changeCompleted, editingTodo }) => {
             switch (event.key) {
               case 'Enter':
                 if (newTodo) {
-                  editingTodo(todo.id, newTodo);
+                  dispatch(editingTodo(todo.id, newTodo));
                   setCurrentTodo(newTodo);
                   setEditing(false);
 
                   return;
                 }
 
-                deleteTodo(todo.id);
+                dispatch(deleteTodo(todo.id));
                 setEditing(false);
 
                 return;
@@ -86,10 +87,4 @@ const TodoItem = ({ todo, deleteTodo, changeCompleted, editingTodo }) => {
 //   todoWasEdited: PropTypes.func.isRequired,
 // };
 
-const mapDispatchToProps = {
-  deleteTodo, 
-  changeCompleted,
-  editingTodo,
-}
-
-export default connect(null, mapDispatchToProps)(TodoItem)
+export default TodoItem;

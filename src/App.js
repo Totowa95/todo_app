@@ -16,7 +16,7 @@ function App() {
     if (localStorage.getItem('list') !== null) {
       dispatch(downloadedFromLocal(JSON.parse(localStorage.getItem('list'))));
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     localStorage.setItem('list', JSON.stringify(todos));

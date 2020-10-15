@@ -1,12 +1,10 @@
 import React from 'react';
 // import PropTypes, { object } from 'prop-types';
-import { connect } from 'react-redux'
-import { editingTodo } from '../redux/actions'
-
+import { useSelector } from 'react-redux';
 import TodoItem from './TodoItem';
 
-const TodoList = ({ todos }) => {
-
+const TodoList = () => {
+  const todos = useSelector(state => state.todos.todos);
   return (
     <ul className="todo-list">
       {todos.map(item => (
@@ -26,14 +24,14 @@ const TodoList = ({ todos }) => {
 //   editingTodo: PropTypes.func.isRequired,
 // };
 
-const mapStateToProps = state => {
-  return {
-    todos: state.todos.todos,
-  };
-};
+// const mapStateToProps = state => {
+//   return {
+//     todos: state.todos.todos,
+//   };
+// };
 
-const mapDispatchToProps = {
-  editingTodo,
-}
+// const mapDispatchToProps = {
+//   editingTodo,
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TodoList)
+export default TodoList;

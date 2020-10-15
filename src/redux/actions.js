@@ -8,22 +8,26 @@ import {
   TOGGLE_COMPLETE,
   // FILTERED_TODOS,
 } from "./types";
+import { store } from './store/configurestore';
 
-export function createTodo(id, todo, completed = false) {
+export function createTodo(newTodo) {
+  const { todos } = store.getState();
+  const actualTodos = [newTodo, ...todos.todos];
+
   return {
     type: CREATE_TODO,
-    payload: {
-      id,
-      title: todo,
-      completed
-    },
+    payload: actualTodos,
   }
 }
 
 export function deleteTodo(id) {
+  const { todos } = store.getState();
+  const actualTodos = todos.todos.filter(todo => todo.id !== id);
+  
+  console.log(actualTodos)
   return {
     type: DELETE_TODO,
-    payload: id
+    payload: actualTodos,
   }
 }
 
@@ -35,29 +39,58 @@ export function downloadedFromLocal(todos) {
 }
 
 export function clearCompleted() {
+  const { todos } = store.getState();
+  const actualTodos = todos.todos.filter(todo => todo.completed === false);
+
   return {
     type: CLEAR_COMPLETED_TODOS,
+    payload: actualTodos,
   }
 }
 
 export function changeCompleted(id) {
+  const { todos } = store.getState();
+  const actualTodos = todos.todos.map(todo => ((todo.id === id)
+  ? { ...todo, completed: !todo.completed }
+  : todo));
+
   return {
     type: CHANGE_COMPLETED_TODOS,
-    payload: id,
+    payload: actualTodos,
   }
 }
 
 export function editingTodo(id, newTitle) {
+  const { todos } = store.getState();
+  const actualTodos = todos.todos.map(todo => ({
+    ...todo, 
+    title: todo.id === id
+    ? newTitle
+    : todo.title
+  }));
+
+
   return {
     type: EDITING_TODO,
-    payload: { id, newTitle },
+    payload: actualTodos,
   }
 }
 
 export function toggleComplete() {
+  const { todos: wrapper } = store.getState();
+  const { todos } = wrapper;
+  let actualTodos = null;
+
+  if (todos.length && todos.every(todo => todo.completed)) {
+    actualTodos = todos.map(todo => ({ ...todo, completed: false }));
+  } else {
+    actualTodos = todos.map(todo => ({ ...todo, completed: true }));
+  } 
+  
   return {
     type: TOGGLE_COMPLETE,
-  }
+    payload: actualTodos,
+  };
 }
 
 // export function filteredTodo(filterBy) {
