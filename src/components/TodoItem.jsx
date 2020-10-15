@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux'
+import { deleteTodo, changeCompleted, editingTodo } from '../redux/actions'
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
-export const TodoItem = ({ todo, complete, onDelete, todoWasEdited }) => {
+const TodoItem = ({ todo, deleteTodo, changeCompleted, editingTodo }) => {
   const [currentTodo, setCurrentTodo] = useState(todo.title);
   const [newTodo, setEditigTodo] = useState(currentTodo);
   const [editing, setEditing] = useState(false);
@@ -19,7 +21,7 @@ export const TodoItem = ({ todo, complete, onDelete, todoWasEdited }) => {
           className="toggle"
           checked={todo.completed}
           onChange={() => {
-            complete(todo.id);
+            changeCompleted(todo.id);
           }}
         />
         <label onDoubleClick={() => setEditing(true)}>
@@ -29,7 +31,7 @@ export const TodoItem = ({ todo, complete, onDelete, todoWasEdited }) => {
           type="button"
           className="destroy"
           onClick={() => {
-            onDelete(todo.id);
+            deleteTodo(todo.id);
           }}
         />
       </div>
@@ -47,14 +49,14 @@ export const TodoItem = ({ todo, complete, onDelete, todoWasEdited }) => {
             switch (event.key) {
               case 'Enter':
                 if (newTodo) {
-                  todoWasEdited(todo.id, newTodo);
+                  editingTodo(todo.id, newTodo);
                   setCurrentTodo(newTodo);
                   setEditing(false);
 
                   return;
                 }
 
-                onDelete(todo.id);
+                deleteTodo(todo.id);
                 setEditing(false);
 
                 return;
@@ -73,13 +75,21 @@ export const TodoItem = ({ todo, complete, onDelete, todoWasEdited }) => {
   );
 };
 
-TodoItem.propTypes = {
-  todo: PropTypes.shape({
-    completed: PropTypes.bool.isRequired,
-    id: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
-  }).isRequired,
-  complete: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  todoWasEdited: PropTypes.func.isRequired,
-};
+// TodoItem.propTypes = {
+//   todo: PropTypes.shape({
+//     completed: PropTypes.bool.isRequired,
+//     id: PropTypes.number.isRequired,
+//     title: PropTypes.string.isRequired,
+//   }).isRequired,
+//   complete: PropTypes.func.isRequired,
+//   onDelete: PropTypes.func.isRequired,
+//   todoWasEdited: PropTypes.func.isRequired,
+// };
+
+const mapDispatchToProps = {
+  deleteTodo, 
+  changeCompleted,
+  editingTodo,
+}
+
+export default connect(null, mapDispatchToProps)(TodoItem)

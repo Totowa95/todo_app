@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux'
+import { createTodo } from '../redux/actions'
+// import PropTypes from 'prop-types';
 
-export const TodoApp = ({ getTodo }) => {
+const TodoApp = ({ createTodo }) => {
   const [todo, setTodo] = useState('');
-
   return (
     <form
       onSubmit={(event) => {
         event.preventDefault();
 
         if (todo.length > 0) {
-          getTodo(+new Date(), todo.trim());
+          createTodo(+new Date(), todo.trim());
           setTodo('');
         }
-
         return;
       }}
     >
@@ -28,6 +28,12 @@ export const TodoApp = ({ getTodo }) => {
   );
 };
 
-TodoApp.propTypes = {
-  getTodo: PropTypes.func.isRequired,
-};
+// TodoApp.propTypes = {
+//   getTodo: PropTypes.func.isRequired,
+// };
+
+const mapDispatchToProps = {
+  createTodo,
+}
+
+export default connect(null, mapDispatchToProps)(TodoApp)

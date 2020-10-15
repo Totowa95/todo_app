@@ -1,13 +1,18 @@
 import React, { useState }from 'react';
+import { useDispatch } from 'react-redux';
+
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
+
+import { clearCompleted } from '../redux/actions';
 
 export const TodosFilter = ({
   todosLeft,
   showTodos,
-  clearCompleted,
   completedTodos,
 }) => {
+  const dispatch = useDispatch();
+  // const todos = useSelector(state => state.todos.todos);
   const [selectedFilter, setSelectedFilter] = useState('All');
 
   return (
@@ -76,7 +81,9 @@ export const TodosFilter = ({
           'clear-completed': true,
           'clear-visibility': !completedTodos,
         })}
-        onClick={() => clearCompleted()}
+        onClick={() => {
+          dispatch(clearCompleted());
+        }}
       >
         Clear completed
       </button>
@@ -84,9 +91,9 @@ export const TodosFilter = ({
   );
 }
 
-TodosFilter.propTypes = {
-  todosLeft: PropTypes.number.isRequired,
-  showTodos: PropTypes.func.isRequired,
-  clearCompleted: PropTypes.func.isRequired,
-  completedTodos: PropTypes.bool.isRequired,
-};
+// TodosFilter.propTypes = {
+//   todosLeft: PropTypes.number.isRequired,
+//   showTodos: PropTypes.func.isRequired,
+//   clearCompleted: PropTypes.func.isRequired,
+//   completedTodos: PropTypes.bool.isRequired,
+// };
