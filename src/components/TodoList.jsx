@@ -4,7 +4,25 @@ import { useSelector } from 'react-redux';
 import TodoItem from './TodoItem';
 
 const TodoList = () => {
-  const todos = useSelector(state => state.todos.todos);
+  const todos = useSelector(state => {
+    if (state.todos.filteredTodos !== undefined) {
+      return state.todos.filteredTodos;
+      
+    }
+    return state.todos.todos;
+  }); 
+  
+  // if (todos.filteredTodos !== undefined) {
+  //   // todos.filterBy
+  //   // // return todos.filteredTodos;
+    
+  //   return todos.todos.filter(todo => {
+  //     if (todos.filterBy === 'all') {
+  //       return todo;
+  //     }
+  //     return todo.completed === todos.filterBy
+
+  //   });
   return (
     <ul className="todo-list">
       {todos.map(item => (

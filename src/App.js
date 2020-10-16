@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import TodoApp from './components/TodoApp';
 import TodoList from './components/TodoList';
 import { TodosFilter } from './components/TodosFilter';
@@ -8,9 +8,6 @@ import { downloadedFromLocal, toggleComplete } from './redux/actions';
 function App() {
   const dispatch = useDispatch();
   const todos = useSelector(state => state.todos.todos);
-  const [filterBy, setFilterBy] = useState('all');
-
-  console.log(todos)
 
   useEffect(() => {
     if (localStorage.getItem('list') !== null) {
@@ -21,11 +18,11 @@ function App() {
   useEffect(() => {
     localStorage.setItem('list', JSON.stringify(todos));
   }, [todos]);
+  console.log(todos)
 
-  const filteredTodos = useMemo(() => todos.filter(todo => ((filterBy === 'all')
-    ? todo
-    : todo.completed === filterBy)), [filterBy, todos]);
-
+  // const filteredTodos = useMemo(() => todos.filter(todo => ((filterBy === 'all')
+  //   ? todo
+  //   : todo.completed === filterBy)), [filterBy, todos]);
   return (
     <section className="todoapp">
       <header className="header">
@@ -63,7 +60,6 @@ function App() {
                 .filter(todo => todo.completed === false)
                 .length
             }
-            showTodos={setFilterBy}
             completedTodos={todos.some(todo => todo.completed)}
           />
         )

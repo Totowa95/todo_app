@@ -4,11 +4,10 @@ import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 // import PropTypes from 'prop-types';
 
-import { clearCompleted } from '../redux/actions';
+import { clearCompleted, filteredTodo } from '../redux/actions';
 
 export const TodosFilter = ({
   todosLeft,
-  showTodos,
   completedTodos,
 }) => {
   const dispatch = useDispatch();
@@ -34,8 +33,8 @@ export const TodosFilter = ({
             })}
             onClick={(event) => {
               event.preventDefault();
+              dispatch(filteredTodo('all'));
               setSelectedFilter('All');
-              showTodos('all');
             }}
           >
             All
@@ -51,7 +50,7 @@ export const TodosFilter = ({
             onClick={(event) => {
               event.preventDefault();
               setSelectedFilter('Active');
-              showTodos(false);
+              dispatch(filteredTodo(false));
             }}
           >
             Active
@@ -67,7 +66,7 @@ export const TodosFilter = ({
             onClick={(event) => {
               event.preventDefault();
               setSelectedFilter('Completed');
-              showTodos(true);
+              dispatch(filteredTodo(true));
             }}
           >
             Completed

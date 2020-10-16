@@ -6,7 +6,7 @@ import {
   CHANGE_COMPLETED_TODOS,
   EDITING_TODO,
   TOGGLE_COMPLETE,
-  // FILTERED_TODOS,
+  FILTERED_TODOS,
 } from "./types";
 import { store } from './store/configurestore';
 
@@ -24,7 +24,6 @@ export function deleteTodo(id) {
   const { todos } = store.getState();
   const actualTodos = todos.todos.filter(todo => todo.id !== id);
   
-  console.log(actualTodos)
   return {
     type: DELETE_TODO,
     payload: actualTodos,
@@ -93,9 +92,14 @@ export function toggleComplete() {
   };
 }
 
-// export function filteredTodo(filterBy) {
-//   return {
-//     type: FILTERED_TODOS,
-//     payload: filterBy,
-//   }
-// }
+export function filteredTodo(filterBy) {
+  const { todos } = store.getState();
+  const filteredTodos = todos.todos.filter(todo => ((filterBy === 'all')
+  ? todo
+  : todo.completed === filterBy));
+  return {
+    type: FILTERED_TODOS,
+    filter: filteredTodos,
+    filterBy,
+  }
+}
