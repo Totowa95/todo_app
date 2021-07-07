@@ -1,19 +1,25 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { createTodo } from '../redux/actions'
+import { useDispatch } from 'react-redux';
+// import PropTypes from 'prop-types';
 
-export const TodoApp = ({ getTodo }) => {
+const TodoApp = () => {
+  const dispatch = useDispatch();
+
   const [todo, setTodo] = useState('');
-
   return (
     <form
       onSubmit={(event) => {
         event.preventDefault();
 
         if (todo.length > 0) {
-          getTodo(+new Date(), todo.trim());
+          dispatch(createTodo({
+            id:+new Date(),
+            title:todo.trim(),
+            completed: false,
+          }));
           setTodo('');
         }
-
         return;
       }}
     >
@@ -28,6 +34,8 @@ export const TodoApp = ({ getTodo }) => {
   );
 };
 
-TodoApp.propTypes = {
-  getTodo: PropTypes.func.isRequired,
-};
+// TodoApp.propTypes = {
+//   getTodo: PropTypes.func.isRequired,
+// };
+
+export default TodoApp;
